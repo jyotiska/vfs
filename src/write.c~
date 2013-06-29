@@ -1,0 +1,13 @@
+#include<stdio.h>
+#include "../include/vfs_main.h"
+#include<string.h>
+
+int write(char* name, char* str,long size)
+{
+	FILE* v = fopen(name,"r+b");
+	fseek(v,size,SEEK_SET);
+	int check = fputs(str,v);
+	//fseek(v,0L,-strlen(str));
+	fclose(v);
+	return check;
+}

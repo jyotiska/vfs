@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include<string.h>
+int main() {
+   char *s1="My House @";
+   char *s2="My Car is green";
+
+   printf ("Returned String 1: %s\n", strstr (s1, "My House"));
+
+   printf("strlen = %lu",strlen(s1));
+   int i=0;
+   for(i=0; i<strlen(s1); i++)
+	{
+		if(!isalnum(s1[i]))
+		{
+			printf("Error ");
+		}
+	}
+}

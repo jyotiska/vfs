@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+#include "../include/vfs_main.h"
+
+int read(char* name, char* str, long filestartpos)
+{
+	FILE * pFile;
+	  long lSize;
+	  char * buffer;
+	  size_t result;
+	int flag=1;
+
+	  pFile = fopen ( name , "r+b" );
+	  if (pFile==NULL) {fputs ("File error",stderr); flag=0;}
+
+	  // obtain file size:
+	  fseek (pFile , filestartpos , SEEK_SET);
+	  lSize = ftell (pFile);
+	 // rewind (pFile);
+
+	  // allocate memory to contain the whole file:
+	  buffer = (char*) malloc (sizeof(char)*lSize);
+	  if (buffer == NULL) {fputs ("Memory error",stderr); flag=0;}
+
+	  // copy the file into the buffer:
+	  result = fread (buffer,1,lSize,pFile);
+	 // if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
+
+	  /* the whole file is now loaded in the memory buffer. */
+
+	  // terminate
+	  fclose (pFile);
+	printf("\n%s\n",buffer);
+	  free (buffer);
+	
+	  return flag;
+}

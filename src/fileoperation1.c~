@@ -1,0 +1,93 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+#include "../include/vfs_main.h"
+#include "../include/hash.h"
+#include "../include/nary.h"
+
+int My_addfile(char* path,char* filename,char* sourcefile,int size,char* vfs_name,struct ntree *root,struct hash_node block[])
+{
+	FILE * sour_F;
+	FILE * dest_F;
+	int i,j;
+	int* buffer;
+	size_t result;
+	char data[sizeof(struct block)];
+	long lsize = size/sizeof(struct block);
+	struct file_descriptor *fd = (struct file_descriptor*)malloc(sizeof(struct file_descriptor));
+	long offset = sizeof(struct main_header) + size/sizeof(struct block) * sizeof(struct file_descriptor);
+	long tot_size = sizeof(struct main_header) + size/sizeof(struct block) * sizeof(struct file_descriptor);
+	
+	sour_F = fopen(sourcefile, "r");
+	if(sour_F == NULL)
+	{
+			printf("ERROR");
+	}
+	data[0]=fgetc(sour_F);
+	i=0;
+	while(data[i]!=EOF)
+	{
+		data[++i]=fgetc(sour_F);
+	}
+	data[i]='\0';
+	fclose(sour_F);
+	
+	dest_F = fopen(vfs_name,"r+b");
+	fseek(dest_F,offset,SEEK_SET);
+	buffer = (int*)malloc(sizeof(int)*lSize);
+	result = fread(buffer,1,lSize*sizeof(int),dest_F);
+	if (buffer == NULL) {puts ("Memory error"); flag=0;}
+	int *primary_freelist=(int *)buffer;
+	
+	for(j = 1;j < size/sizeof(struct block);j++){
+		if(primary_freelist[j] == 0){
+			strcpy(fd->file_name,filename);
+			strcpy(fd->location_full_path,path);
+			fd->file_type = 1;
+			fd->file_size = 1000;
+			insert_hashtable(block,fd);
+			root=nary_insert(fd,root);
+			primary_freelist[j] = 1;
+			break;
+		}
+	}
+	
+	fseek(dest_F,tot_size+j*sizeof(int),SEEK_SET);
+	fwrite(data,j*sizeof(struct block),1,dest_F);
+	fseek(dest_F,offset,SEEK_SET);
+	fwrite(primary_freelist,lsize*sizeof(int),1, dest_F);
+	fclose(dest_F);
+	return 0;
+}
+
+
+int My_removefile(char *path,char* vfs_name,int size)
+{
+	FILE *pFile;
+	int* buffer;
+	size_t result;
+	long offset = sizeof(struct main_header) + size/sizeof(struct block) * sizeof(struct file_descriptor);
+	
+	pFile = fopen(vfs_name,"r+b");
+	fseek(pFile,offset,SEEK_SET);
+	buffer = (int*)malloc(sizeof(int)*lSize);
+	result = fread(buffer,1,lSize*sizeof(int),pFile);
+	return 0;
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
