@@ -1,1 +1,0 @@
-void create_vfs(char vfs_name[100], long vfs_size);

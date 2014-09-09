@@ -1,1 +1,0 @@
-int mount(char *vfs_name, int* primary_freelist,struct ntree* root,struct hash_node block[]);
