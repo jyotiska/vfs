@@ -1,0 +1,4 @@
+jayati@krish:~/VFS/src$ gcc -c vfs_main.c -o vfs_main.o 
+jayati@krish:~/VFS/src$ gcc -c test.c -o test.o
+jayati@krish:~/VFS/src$ gcc test.o vfs_main.o -o t
+
